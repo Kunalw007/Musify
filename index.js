@@ -1,19 +1,23 @@
 const express = require("express")
-const dbConnect = require("./config/database.js")
+const mongoDBConnect = require("./config/database.js")
 const routes = require("./routes/signup.route.js")
+const logger = require('tracer').colorConsole({});
 require("dotenv").config()
 
-const app = express()
 
-if(dbConnect() == false) {
+
+const app = express()
+const PORT = process.env.PORT
+
+//Database connection
+if(mongoDBConnect() == false) {
     return ;
 }
+//Body-Parser
 app.use(express.json())
-
+//Routes
 app.use("/api/auth/",routes)
 
-const port = process.env.PORT
-
-app.listen(3000,()=>{
-    console.log(`Server is running at ${port}`)
+app.listen(PORT,()=>{
+    logger.info(`Server is running at ${PORT}`)
 })

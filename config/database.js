@@ -1,16 +1,18 @@
 const mongoose = require("mongoose")
+const logger = require('tracer').colorConsole({});
 require("dotenv").config()
 
 
-const dbConnect = () => {
-    mongoose.connect(process.env.DATABASE_URL)
-    .then(()=>{console.log("Database Connection successfull")
-    return true;
+const mongoDBConnect = async () => {
+    mongoose.connect(process.env.DATABASE_URL, {
+    })
+    .then(()=>{
+        logger.info("Connection with MongoDB is successfull")
+        return true;
     })
     .catch((error)=>{
-        console.log("Issues in DB connection")
-        console.log(error.message)
+        logger.error("Error while connecting with MongoDB " + error)
         return false;
     })
 }
-module.exports = dbConnect;
+module.exports = mongoDBConnect;
